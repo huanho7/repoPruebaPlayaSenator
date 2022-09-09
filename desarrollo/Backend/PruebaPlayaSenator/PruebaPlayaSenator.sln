@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.32630.194
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PruebaPlayaSenator", "PruebaPlayaSenator\PruebaPlayaSenator.csproj", "{0438B903-C0B5-4D1A-AFDB-8BF349F22214}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PruebaPlayaSenator.Application", "PruebaPlayaSenator.Application\PruebaPlayaSenator.Application.csproj", "{B52D13EB-9F91-4503-A2B9-7FECB528B0AA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0438B903-C0B5-4D1A-AFDB-8BF349F22214}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0438B903-C0B5-4D1A-AFDB-8BF349F22214}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0438B903-C0B5-4D1A-AFDB-8BF349F22214}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0438B903-C0B5-4D1A-AFDB-8BF349F22214}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B52D13EB-9F91-4503-A2B9-7FECB528B0AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B52D13EB-9F91-4503-A2B9-7FECB528B0AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B52D13EB-9F91-4503-A2B9-7FECB528B0AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B52D13EB-9F91-4503-A2B9-7FECB528B0AA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {664C010B-B220-4B26-ABFE-AC281F6C94A7}
+	EndGlobalSection
+EndGlobal
