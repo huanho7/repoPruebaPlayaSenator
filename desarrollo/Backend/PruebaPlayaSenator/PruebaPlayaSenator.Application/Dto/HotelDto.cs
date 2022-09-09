@@ -17,9 +17,9 @@ namespace PruebaPlayaSenator.Application.Dto
         public int IdRelevance { get; set; }
         public string RelevanceName { get; set; }
         public string ShortImageTitle { get; set; }
-        public byte[] ShortImageData { get; set; }
+        public string ShortImageData { get; set; }
         public string LargeImageTitle { get; set; }
-        public byte[] LargeImageData { get; set; }
+        public string LargeImageData { get; set; }
 
         public List<CharacteristicDto> listaCaracteristicas { get; set; }
     }

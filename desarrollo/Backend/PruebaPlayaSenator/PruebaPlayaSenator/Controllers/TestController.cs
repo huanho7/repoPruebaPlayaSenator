@@ -5,6 +5,7 @@ using ExampleAPIWithEF.Application.Services;
 using PruebPlayaSenator.Aplicacion;
 using PruebaPlayaSenator.Application.Dto;
 using System.Collections.Generic;
+using PruebaPlayaSenator.Application.ViewModel;
 
 namespace ExampleAPIWithEF.Controllers
 {
@@ -48,16 +49,16 @@ namespace ExampleAPIWithEF.Controllers
 
         }
 
-        [Route("~/api/PostNuevoUsuario")]
+        [Route("~/api/PostAsignarNuevoEstadoRelevancia")]
         [HttpPost]
-        public async Task<Resultado<HotelDto>> PostNuevoUsuarioAsync(HotelDto uDto)
+        public Resultado<bool> PostAsignarNuevoEstadoRelevancia([FromBody] ChangeRelevanceIdRequestViewModel changeRelevanceIdRequestViewModel)
         {
 
-            Resultado<HotelDto> res = null;
+            Resultado<bool> res = null;
 
             using (IHotelApplicationService userApplicationService = Factoria.GetInstance<IHotelApplicationService>())
             {
-                res = await userApplicationService.CrearHotelAsync(uDto);
+                res = userApplicationService.UpdateHotel(changeRelevanceIdRequestViewModel.IdHotel, changeRelevanceIdRequestViewModel.IdNewRelevanceStatus);
             }
 
             return res;

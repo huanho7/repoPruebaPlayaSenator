@@ -15,43 +15,80 @@ namespace ExampleAPIWithEF.Application.Services
     {
         PruebaPlayaSenatorContext newContext = new PruebaPlayaSenatorContext();
 
-        public async Task<Resultado<HotelDto>> CrearHotelAsync(HotelDto uDto)
+        public Resultado<bool> UpdateHotel(int idHotel, int idNewRelevance)
         {
-            //Resultado<UserDto> res = new Resultado<UserDto>();
+            Resultado<bool> res = new Resultado<bool>();
 
-            //try
-            //{
+            try
+            {
 
-            //    User unew = new User();
+                if (idHotel < 1)
+                {
+                    res.Mensaje = "Debe especificar un valor válido de identificador de hotel";
+                    res.ResultadoOperacion = false;
 
-            //    // Mapear las propiedades
-            //    unew = Factoria.Map<UserDto, User>(uDto);
-            //    unew.IdUsuario = null;
+                    return res;
+                }
 
-            //    newContext.Add(unew);
+                if (idNewRelevance < 1)
+                {
+                    res.Mensaje = "Debe especificar un valor válido para el nuevo estado del hotel";
+                    res.ResultadoOperacion = false;
 
-            //    await newContext.SaveChangesAsync();
+                    return res;
+                }
 
-            //    if (unew != null && unew.IdUsuario != null)
-            //    {
-            //        // Ejemplo llamada webservice para recuperar por id generado
-            //        var externalProduct = await ExternalProductAPI.getExternalEmployeeAsync();
+                Relevance relv = newContext.Relevance
+                                    .Where(r => r.Id == idNewRelevance)
+                                    .FirstOrDefault();
 
-            //        //Se asignan propiedades de servicio externo
-            //    }
-            //    res.Mensaje = "Usuario guardado correctamente";
-            //    res.ResultadoOperacion = true;
+                if (relv == null)
+                {
+                    res.Mensaje = "Debe especificar un valor válido para el nuevo estado del hotel";
+                    res.ResultadoOperacion = false;
 
-            //    return res;
-            //}
-            //catch (Exception ex)
-            //{
-            //    res.Mensaje = "Se ha producido un error en la aplicación";
-            //    res.ResultadoOperacion = true;
+                    return res;
+                }
 
-            //    return res;
+                Hotel hotel = newContext.Hotel
+                                .Where(h => h.Id == idHotel)
+                                .FirstOrDefault();
 
-            //}
+                if (hotel == null)
+                {
+                    res.Mensaje = "No existe el hotel con el identificador seleccionado.";
+                    res.ResultadoOperacion = true;
+
+                    return res;
+                }
+
+                if (hotel.IdRelevance == idNewRelevance)
+                {
+                    res.Mensaje = "El hotel ya se encuentra con el estado de relevancia seleccionado.";
+                    res.ResultadoOperacion = true;
+
+                    return res;
+                }
+
+                hotel.IdRelevance = idNewRelevance;
+
+                newContext.Update(hotel);
+
+                newContext.SaveChangesAsync();
+
+                res.Mensaje = "Nuevo estado de hotel guardado correctamente.";
+                res.ResultadoOperacion = true;
+
+                return res;
+            }
+            catch (Exception ex)
+            {
+                res.Mensaje = "Se ha producido un error en la aplicación";
+                res.ResultadoOperacion = true;
+
+                return res;
+
+            }
 
             return null;
         }
@@ -91,10 +128,12 @@ namespace ExampleAPIWithEF.Application.Services
                 // Mapear las propiedades
                 HotelDto hotelDto = Factoria.Map<Hotel, HotelDto>(hotel);
 
-                //hotel.HotelXCharacteristic.ToList().ForEach(x =>
-                //{
-                //    hotelDto.listaCaracteristicas.Add();
-                //});
+                hotelDto.listaCaracteristicas = new List<CharacteristicDto>();
+
+                hotel.HotelXCharacteristic.ToList().ForEach(x =>
+                {
+                    hotelDto.listaCaracteristicas.Add(Factoria.Map<Characteristic, CharacteristicDto>(x.Characteristic));
+                });
 
                 res.Respuesta = hotelDto;
                 res.Mensaje = "Hotel recuperado correctamente";

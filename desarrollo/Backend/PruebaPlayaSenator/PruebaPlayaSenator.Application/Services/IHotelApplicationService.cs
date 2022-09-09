@@ -7,7 +7,7 @@ namespace ExampleAPIWithEF.Application.Services
 {
     public interface IHotelApplicationService : IApplicationService
     {
-        Task<Resultado<HotelDto>> CrearHotelAsync(HotelDto usuario);
+        Resultado<bool> UpdateHotel(int idHotel, int idNewRelevance);
         Resultado<HotelDto> GetHotelById(int idHotel);
         Resultado<List<HotelDto>> GetListaHoteles();
     }
