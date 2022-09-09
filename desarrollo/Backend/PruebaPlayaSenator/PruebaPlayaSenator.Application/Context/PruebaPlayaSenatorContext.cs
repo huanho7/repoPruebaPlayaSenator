@@ -69,6 +69,11 @@ namespace ExampleAPIWithEF.Context
                 .HasMany(c => c.Hotels)
                 .WithOne(h => h.City);
 
+            modelBuilder.Entity<City>()
+                .HasOne(c => c.Province)
+                .WithMany(h => h.Cities)
+                .HasForeignKey(c => c.IdProvince);
+
             modelBuilder.Entity<Country>()
                 .HasMany(p => p.Provinces)
                 .WithOne(c => c.Country);
@@ -94,11 +99,13 @@ namespace ExampleAPIWithEF.Context
 
             modelBuilder.Entity<HotelXCharacteristic>()
                 .HasOne(h => h.Hotel)
-                .WithMany(h => h.HotelXCharacteristic);
+                .WithMany(h => h.HotelXCharacteristic)
+                .HasForeignKey(h => h.IdHotel);
 
             modelBuilder.Entity<HotelXCharacteristic>()
                 .HasOne(h => h.Characteristic)
-                .WithMany(c => c.HotelXCharacteristic);
+                .WithMany(c => c.HotelXCharacteristic)
+                .HasForeignKey(h => h.IdCharacteristic);
 
             modelBuilder.Entity<Province>()
                 .HasOne(p => p.Country)

@@ -14,9 +14,9 @@ namespace ExampleAPIWithEF.Controllers
     {
 
 
-        [Route("~/api/GetHotel/{id}")]
+        [Route("~/api/GetHotelById/{id}")]
         [HttpGet]
-        public Resultado<HotelDto> GetNumeroAsync(int id)
+        public Resultado<HotelDto> GetHotelById(int id)
         {
 
             Resultado<HotelDto> res = null;

@@ -1,5 +1,6 @@
 ﻿using ExampleAPIWithEF.Application.Shared;
 using ExampleAPIWithEF.Context;
+using Microsoft.EntityFrameworkCore;
 using PruebaPlayaSenator.Application.Dto;
 using PruebaPlayaSenator.Application.Entities;
 using PruebPlayaSenator.Aplicacion;
@@ -55,52 +56,61 @@ namespace ExampleAPIWithEF.Application.Services
             return null;
         }
 
-        public Resultado<HotelDto> GetHotelById(int idUsuario)
+        public Resultado<HotelDto> GetHotelById(int idHotel)
         {
-            //Resultado<UserDto> res = new Resultado<UserDto>();
+            Resultado<HotelDto> res = new Resultado<HotelDto>();
 
-            //try
-            //{
+            try
+            {
 
+                if (idHotel < 1)
+                {
+                    res.Mensaje = "Debe especificar un valor válido de identificador de hotel";
+                    res.ResultadoOperacion = true;
 
+                    return res;
+                }
 
-            //    if (idUsuario < 1)
-            //    {
-            //        res.Mensaje = "Debe especificar un valor válido de identificador de usuario";
-            //        res.ResultadoOperacion = true;
+                Hotel hotel = newContext.Hotel
+                                .Include(h => h.Relevance)
+                                .Include(h => h.Category)
+                                .Include(h => h.City)
+                                .Include(h => h.HotelXCharacteristic)
+                                .ThenInclude(hc => hc.Characteristic)
+                                .Where(h => h.Id == idHotel)
+                                .FirstOrDefault();
 
-            //        return res;
-            //    }
+                if (hotel == null)
+                {
+                    res.Mensaje = "No existe el hotel con el identificador seleccionado.";
+                    res.ResultadoOperacion = true;
 
-            //    User user = newContext.User.Where(u => u.IdUsuario == 1).FirstOrDefault();
+                    return res;
+                }
 
-            //    if (user == null)
-            //    {
-            //        res.Mensaje = "No existe el usuario en el sistema.";
-            //        res.ResultadoOperacion = true;
+                // Mapear las propiedades
+                HotelDto hotelDto = Factoria.Map<Hotel, HotelDto>(hotel);
 
-            //        return res;
-            //    }
+                //hotel.HotelXCharacteristic.ToList().ForEach(x =>
+                //{
+                //    hotelDto.listaCaracteristicas.Add();
+                //});
 
-            //    // Mapear las propiedades
-            //    UserDto userDto = Factoria.Map<User, UserDto>(user);
+                res.Respuesta = hotelDto;
+                res.Mensaje = "Hotel recuperado correctamente";
+                res.ResultadoOperacion = true;
 
-            //    res.Respuesta = userDto;
-            //    res.Mensaje = "Usuario guardado correctamente";
-            //    res.ResultadoOperacion = true;
+                return res;
+            }
+            catch (Exception ex)
+            {
+                res.Mensaje = "Se ha producido un error en la aplicación";
+                res.ResultadoOperacion = true;
 
-            //    return res;
-            //}
-            //catch (Exception ex)
-            //{
-            //    res.Mensaje = "Se ha producido un error en la aplicación";
-            //    res.ResultadoOperacion = true;
+                return res;
 
-            //    return res;
+            }
 
-            //}
-
-            return null;
         }
 
         public Resultado<List<HotelDto>> GetListaHoteles()
@@ -110,25 +120,14 @@ namespace ExampleAPIWithEF.Application.Services
             try
             {
 
-
-
-                //if (idUsuario < 1)
-                //{
-                //    res.Mensaje = "Debe especificar un valor válido de identificador de usuario";
-                //    res.ResultadoOperacion = true;
-
-                //    return res;
-                //}
-
-                List<Hotel> hoteles = newContext.Hotel.ToList();
-
-                //if (user == null)
-                //{
-                //    res.Mensaje = "No existe el usuario en el sistema.";
-                //    res.ResultadoOperacion = true;
-
-                //    return res;
-                //}
+                List<Hotel> hoteles = newContext.
+                                        Hotel
+                                        .Include(h => h.Relevance)
+                                        .Include(h => h.Category)
+                                        .Include(h => h.City)
+                                        .Include(h => h.HotelXCharacteristic)
+                                        .ThenInclude(hc => hc.Characteristic)
+                                        .ToList();
 
                 // Mapear las propiedades
                 List<HotelDto> hotelesDto = Factoria.MapList<Hotel, HotelDto>(hoteles).ToList();
