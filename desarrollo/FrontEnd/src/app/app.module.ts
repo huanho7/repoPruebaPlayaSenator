@@ -16,6 +16,7 @@ import { HotelService } from './services/hotelservice';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { NgxSpinnerModule } from 'ngx-spinner';
+import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 
 
 
@@ -38,6 +39,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
     ReactiveFormsModule,
     MatSnackBarModule,
     NgxSpinnerModule,
+    SweetAlert2Module.forRoot()
   ],
   providers: [HttpClientModule],
   bootstrap: [AppComponent]

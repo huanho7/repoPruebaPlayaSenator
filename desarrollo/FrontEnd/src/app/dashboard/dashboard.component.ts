@@ -1,11 +1,14 @@
 import {Component, OnInit} from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { Subscription } from 'rxjs';
 import {HotelDto} from '../entities/HotelDto';
 import { HotelService } from '../services/hotelservice';
 import { IPaginacionArgs } from '../shared/IPaginationArgs';
 import { IPaginationOptions } from '../shared/IPaginationOptions';
 import { SnackbarService } from '../shared/Snackbar.service';
+import { HoteldetailComponent } from './hoteldetail/hoteldetail.component';
+import { MatDialog } from '@angular/material/dialog';
 
 
 @Component({
@@ -15,6 +18,8 @@ import { SnackbarService } from '../shared/Snackbar.service';
 })
 export class DashboardComponent implements OnInit {
 
+  private subscriptions: Subscription[]  = [];
+  
   pageSize : number = 10; 
   currentPage = 1;
   route = '';
@@ -26,7 +31,8 @@ export class DashboardComponent implements OnInit {
   constructor(private dataService: HotelService,
               private fb: FormBuilder,
               private spinner: NgxSpinnerService,
-              private snackBar: SnackbarService) {
+              private snackBar: SnackbarService,
+              private matDialog: MatDialog) {
 
     // this.busquedaForm = this.fb.group({
     //   // run: ['', [validarDigitoVerificador]],
@@ -44,7 +50,7 @@ export class DashboardComponent implements OnInit {
 
 
 
-  displayedColumns = ['name', 'category', 'status', 'action'];
+  displayedColumns = ['name', 'action', 'category', 'status'];
   dataSource = [
     {Id: 1, Name: 'Post One', Category: 1, Description: 'Description', Image: 'Body 1', Comment: '', Status: 1},
     {Id: 2, Name: 'Post One', Category: 1, Description: 'Description', Image: 'Body 1', Comment: '', Status: 1},
@@ -90,6 +96,7 @@ export class DashboardComponent implements OnInit {
         // this.mostrandoFin = res.data.Respuesta.meta.currentPage * res.data.Respuesta.meta.itemsPerPage > this.length
         //     ? this.length
         //     : res.data.Respuesta.meta.currentPage * res.data.Respuesta.meta.itemsPerPage;
+        this.snackBar.openSnackBar('test');
       } else {
         this.snackBar.openSnackBar(res.data.Error);
         // this.length = 0;
@@ -115,6 +122,27 @@ export class DashboardComponent implements OnInit {
     // }
 
     // return busquedaFormValue
+  }
+  
+  public openHotelModal(idHotel:number): void {
+
+    const data = {
+      id:idHotel
+    };
+
+    const dialog = this.matDialog.open(HoteldetailComponent, {
+      panelClass: 'custom-dialog-container',
+      width: '50%',
+      data,
+    });
+
+    const sub: Subscription = dialog.afterClosed().subscribe((res: boolean) => {
+      if (res) {
+        this.filtrar();
+      }
+    });
+
+    this.subscriptions.push(sub);
   }  
 
 }
