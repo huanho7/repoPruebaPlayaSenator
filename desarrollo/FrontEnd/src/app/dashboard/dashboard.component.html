@@ -22,15 +22,15 @@
                     <mat-table #table [dataSource]="dataSource">
                     <ng-container matColumnDef="name">
                       <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
-                      <mat-cell *matCellDef="let element"> {{element.Name}} </mat-cell>
+                      <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
                     </ng-container>
                       <ng-container matColumnDef="category">
                         <mat-header-cell *matHeaderCellDef> Category </mat-header-cell>
-                        <mat-cell *matCellDef="let element"> {{element.Category}} </mat-cell>
+                        <mat-cell *matCellDef="let element"> {{element.categoryName}} </mat-cell>
                       </ng-container>
                       <ng-container matColumnDef="status">
                         <mat-header-cell *matHeaderCellDef> Status </mat-header-cell>
-                        <mat-cell *matCellDef="let element"> {{element.Status}} </mat-cell>
+                        <mat-cell *matCellDef="let element"> {{element.relevanceName}} </mat-cell>
                       </ng-container>
                       <ng-container matColumnDef="action">
                         <mat-header-cell *matHeaderCellDef></mat-header-cell>

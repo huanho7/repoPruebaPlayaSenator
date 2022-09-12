@@ -1,43 +1,52 @@
+import { HttpClient, HttpParams } from '@angular/common/http';
 import {Injectable} from '@angular/core';
-import {HotelDto} from '../entities/HotelDto';
-import {Observable, of} from 'rxjs';
+import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
+import { IPaginacionArgs } from '../shared/IPaginationArgs';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class HotelService {
 
-  ELEMENT_DATA: HotelDto[] = [
-    {Id: 1, Name: 'Post One', Category: 1, Description: 'Description', Image: 'Body 1', Comment: '', Status: 1},
-    {Id: 2, Name: 'Post One', Category: 1, Description: 'Description', Image: 'Body 1', Comment: '', Status: 1},
-    {Id: 3, Name: 'Post One', Category: 1, Description: 'Description', Image: 'Body 1', Comment: '', Status: 1},
-    {Id: 4, Name: 'Post One', Category: 1, Description: 'Description', Image: 'Body 1', Comment: '', Status: 1},
-    {Id: 5, Name: 'Post One', Category: 1, Description: 'Description', Image: 'Body 1', Comment: '', Status: 1}
-  ];
-  categories = [
-    {value: 'Web-Development', viewValue: 'Web Development'},
-    {value: 'Android-Development', viewValue: 'Android Development'},
-    {value: 'IOS-Development', viewValue: 'IOS Development'}
-  ];
-
-  constructor() {
+  constructor(private _httpClient: HttpClient) {
   }
 
-  getData(): Observable<HotelDto[]> {
-    return of<HotelDto[]>(this.ELEMENT_DATA);
+  // Obtenemos la lista de hoteles
+  getListaHoteles(args: IPaginacionArgs, busqueda: any): Observable<any> {
+
+    let rutaBackend : string = environment.rutaBackEndDev;
+
+    // Filtro
+    let params = new HttpParams();
+
+    if (busqueda) {
+      busqueda.run != null ? (params = params.append('run', busqueda.run)) : null;
+      busqueda.nombreApellido != null ? (params = params.append('nombreApellido', busqueda.nombreApellido)) : null;
+      busqueda.idSolicitud != null ? (params = params.append('idSolicitud', busqueda.idSolicitud)) : null;
+      busqueda.idTipoTramite != null ? (params = params.append('idTipoTramite', busqueda.idTipoTramite)) : null;
+      busqueda.idClaseLicencia != null ? (params = params.append('idClaseLicencia', busqueda.idClaseLicencia)) : null;
+    }
+    let response = this._httpClient.get<any>(rutaBackend + '/GetHoteles'/*, args, { params: params }*/);
+    return response;
   }
 
-  getCategories() {
-    return this.categories;
-  }
+  // // Obtenemos un hotel por su id
+  // getHotelById(args: IPaginacionArgs, busqueda: any): Observable<any> {
 
-  addPost(data:HotelDto) {
-    this.ELEMENT_DATA.push(data);
-  }
+  //   let rutaBackend : string = environment.rutaBackEndDev;
 
-  deletePost(index:number) {
-    this.ELEMENT_DATA = [...this.ELEMENT_DATA.slice(0, index), ...this.ELEMENT_DATA.slice(index + 1)];
-  }
+  //   // Filtro
+  //   let params = new HttpParams();
 
-  dataLength() {
-    return this.ELEMENT_DATA.length;
-  }
+  //   if (busqueda) {
+  //     busqueda.run != null ? (params = params.append('run', busqueda.run)) : null;
+  //     busqueda.nombreApellido != null ? (params = params.append('nombreApellido', busqueda.nombreApellido)) : null;
+  //     busqueda.idSolicitud != null ? (params = params.append('idSolicitud', busqueda.idSolicitud)) : null;
+  //     busqueda.idTipoTramite != null ? (params = params.append('idTipoTramite', busqueda.idTipoTramite)) : null;
+  //     busqueda.idClaseLicencia != null ? (params = params.append('idClaseLicencia', busqueda.idClaseLicencia)) : null;
+  //   }
+
+  //   return this._httpClient.get<any>(rutaBackend + '/GetHoteles'/*, args, { params: params }*/);
+  // }
 }

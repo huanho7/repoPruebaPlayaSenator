@@ -11,6 +11,11 @@ import {FlexLayoutModule} from '@angular/flex-layout';
 import { InicioComponent } from './inicio/inicio.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { WelcomeComponent } from './welcome/welcome.component';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HotelService } from './services/hotelservice';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 
 
@@ -26,9 +31,15 @@ import { WelcomeComponent } from './welcome/welcome.component';
     AppRoutingModule,
     MaterialModule,
     FlexLayoutModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+
+    HttpClientModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatSnackBarModule,
+    NgxSpinnerModule,
   ],
-  providers: [],
+  providers: [HttpClientModule],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
