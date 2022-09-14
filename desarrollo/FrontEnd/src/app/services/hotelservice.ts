@@ -3,6 +3,7 @@ import {Injectable} from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { IPaginacionArgs } from '../shared/IPaginationArgs';
+import { ChangeRelevanceRequestViewModel } from '../ViewModels/ChangeRelevanceRequestViewModel';
 
 @Injectable({
   providedIn: 'root',
@@ -28,6 +29,15 @@ export class HotelService {
       busqueda.idClaseLicencia != null ? (params = params.append('idClaseLicencia', busqueda.idClaseLicencia)) : null;
     }
     let response = this._httpClient.get<any>(rutaBackend + '/GetHoteles'/*, args, { params: params }*/);
+    return response;
+  }
+
+  // Actualizamos la relevancia del hotel
+  setRelevanciaHotel(changeRelevanceRequestViewModel:ChangeRelevanceRequestViewModel): Observable<any> {
+
+    let rutaBackend : string = environment.rutaBackEndDev;
+
+    let response = this._httpClient.post<any>(rutaBackend + '/ChangeRelevancePost', changeRelevanceRequestViewModel);
     return response;
   }
 

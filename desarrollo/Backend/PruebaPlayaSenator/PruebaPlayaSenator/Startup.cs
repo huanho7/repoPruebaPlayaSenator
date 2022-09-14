@@ -37,7 +37,10 @@ namespace PruebaPlayaSenator
             }
 
             app.UseCors(
-                options => options.AllowAnyOrigin()
+                options => options
+                            .AllowAnyOrigin()
+                            .AllowAnyHeader()
+                            .AllowAnyMethod()
             );
 
             app.UseHttpsRedirection();

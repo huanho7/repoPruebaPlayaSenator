@@ -1,4 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { HotelService } from 'src/app/services/hotelservice';
+import { SnackbarService } from 'src/app/shared/Snackbar.service';
+import { ChangeRelevanceRequestViewModel } from 'src/app/ViewModels/ChangeRelevanceRequestViewModel';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -8,9 +13,24 @@ import Swal from 'sweetalert2';
 })
 export class HoteldetailComponent implements OnInit {
 
-  constructor() { }
+  public detalleHotelForm!: FormGroup;  
+
+  constructor(private spinner: NgxSpinnerService,
+              private dataService: HotelService,
+              private snackBar: SnackbarService,
+              private fb: FormBuilder
+              ) { }
 
   ngOnInit(): void {
+    this.initFormHotel();
+  }
+
+  initFormHotel(){
+    this.detalleHotelForm = this.fb.group({
+      foto: ['foto'],
+      nombre: ['ejemplo'],
+      descripcion: ['descripcionej']
+    });
   }
 
   CambiarRelevanciaHotel(){
@@ -23,6 +43,21 @@ export class HoteldetailComponent implements OnInit {
     }).then((swal: { isConfirmed: any; }) => {
       if (swal.isConfirmed) {
         //this.matDialogRef.close()
+        let newCRReq : ChangeRelevanceRequestViewModel = new ChangeRelevanceRequestViewModel();
+
+        newCRReq.IdHotel = 1;
+        newCRReq.IdNewRelevanceStatus = 2;
+
+        this.spinner.show();
+        this.dataService.setRelevanciaHotel(newCRReq).subscribe(res => {
+          this.spinner.hide();
+          if (res.resultadoOperacion) {
+            this.snackBar.openSnackBar('El nivel de relevancia del hotel se actualizó correctamente');
+          } else {
+            this.snackBar.openSnackBar('Debido a un error no pudo actualizarse el nivel de relevancia del hotel');
+          }
+        });        
+
       }
     });    
   }  

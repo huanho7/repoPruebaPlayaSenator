@@ -16,7 +16,9 @@ import {
 import {
   MatButtonModule
 } from '@angular/material/button';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatInputModule } from '@angular/material/input';
 
 
 @NgModule({
@@ -28,7 +30,9 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
     MatCardModule,
     MatButtonModule,
     MatTableModule,
-    MatDialogModule
+    MatDialogModule,
+    MatButtonModule,
+    MatInputModule
   ],
   exports: [
     MatSidenavModule,
@@ -38,7 +42,9 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
     MatCardModule,
     MatButtonModule,
     MatTableModule,
-    MatDialogModule
+    MatDialogModule,
+    MatButtonModule,
+    MatInputModule
   ]
 })
 export class MaterialModule {}

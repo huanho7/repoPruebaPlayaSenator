@@ -49,9 +49,9 @@ namespace ExampleAPIWithEF.Controllers
 
         }
 
-        [Route("~/api/PostAsignarNuevoEstadoRelevancia")]
+        [Route("~/api/ChangeRelevancePost")]
         [HttpPost]
-        public Resultado<bool> PostAsignarNuevoEstadoRelevancia([FromBody] ChangeRelevanceIdRequestViewModel changeRelevanceIdRequestViewModel)
+        public Resultado<bool> ChangeRelevancePost([FromBody] ChangeRelevanceIdRequestViewModel changeRelevanceIdRequestViewModel)
         {
 
             Resultado<bool> res = null;
