@@ -103,7 +103,7 @@ namespace ExampleAPIWithEF.Application.Services
                 if (idHotel < 1)
                 {
                     res.Mensaje = "Debe especificar un valor válido de identificador de hotel";
-                    res.ResultadoOperacion = true;
+                    res.ResultadoOperacion = false;
 
                     return res;
                 }

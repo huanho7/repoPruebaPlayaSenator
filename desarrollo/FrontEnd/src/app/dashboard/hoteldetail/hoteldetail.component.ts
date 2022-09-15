@@ -24,7 +24,16 @@ export class HoteldetailComponent implements OnInit {
               private fb: FormBuilder,
               @Inject(MAT_DIALOG_DATA) public data: any,
               private matDialogRef: MatDialogRef<HoteldetailComponent>,
-              ) { }
+              ) {
+
+                this.detalleHotelForm = this.fb.group({
+                  smallPhoto: [''],
+                  largePhoto: [''],
+                  name: [''],
+                  description: ['']
+                });
+
+               }
 
   ngOnInit(): void {
     this.initFormHotel();

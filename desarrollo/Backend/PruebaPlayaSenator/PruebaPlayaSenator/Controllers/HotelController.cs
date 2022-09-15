@@ -11,7 +11,7 @@ namespace ExampleAPIWithEF.Controllers
 {
     [ApiController]
     [Route("api")]
-    public class TestController : ControllerBase
+    public class HotelController : ControllerBase
     {
 
 

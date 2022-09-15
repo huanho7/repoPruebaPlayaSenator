@@ -1,15 +1,7 @@
 <div>
     <br>
       <div class="container">
-          <div class="container">
-            <div fxLayout="column" fxLayoutGap="20px" fxLayout.gt-md="row"  fxLayoutAlign="space-around center" class="content">
-                <div class="blocks">
-                    <button button="submit" mat-raised-button color="primary">
-                        <mat-icon>add</mat-icon> Add Post
-                    </button>
-                </div>
-          </div>
-      </div>
+
       <br>
       <div class="container">
         <div fxLayout="row" fxLayoutAlign="center center" class="content">
@@ -20,6 +12,13 @@
             <mat-card-content>
                 <div class="example-container mat-elevation-z8">
                     <mat-table #table [dataSource]="dataSource">
+                      <ng-container matColumnDef="image">
+                        <mat-header-cell *matHeaderCellDef> </mat-header-cell>
+                        <mat-cell *matCellDef="let element">
+                          <div *ngIf="(element.shortImageData == undefined)" mat-card-avatar class="example-header-image" style="background-image: url('{{ this.imageHotelNotAvaible }}');"></div>
+                          <div *ngIf="(element.shortImageData != undefined)" mat-card-avatar class="example-header-image" style="background-image: url('{{ element.shortImageData.trim() }}');"></div> 
+                        </mat-cell>
+                      </ng-container>
                     <ng-container matColumnDef="name">
                       <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
                       <mat-cell *matCellDef="let element">
@@ -42,14 +41,32 @@
                         <mat-header-cell *matHeaderCellDef> Category </mat-header-cell>
                         <mat-cell *matCellDef="let element"> {{element.categoryName}} </mat-cell>
                       </ng-container>
-                      <ng-container matColumnDef="status">
-                        <mat-header-cell *matHeaderCellDef> Status </mat-header-cell>
-                        <mat-cell *matCellDef="let element"> {{element.relevanceName}} </mat-cell>
-                      </ng-container>
+
 
                       <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
                       <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
                     </mat-table>
+                                  <!-- Paginado - length > 0-->
+                    <div *ngIf="1 > 0" class="paginacion-container">
+                      <div style="float: left;">
+                        Mostrando del  mostrandoInicio  al  mostrandoFin  de  length  entradas
+                      </div>
+                      <mat-paginator
+                        [length]="6"
+                        [pageIndex]="0"
+                        [pageSize]="5"
+                        [hidePageSize]="true"
+                        (page)="pageChanged($event)"
+                      ></mat-paginator>
+
+                      <!-- <mat-paginator
+                        [length]="length"
+                        [pageIndex]="currentPage - 1"
+                        [pageSize]="pages.value"
+                        [hidePageSize]="true"
+                        (page)="pageChanged($event)"
+                      ></mat-paginator> -->
+                    </div>
                   </div>
             </mat-card-content>
           </mat-card>

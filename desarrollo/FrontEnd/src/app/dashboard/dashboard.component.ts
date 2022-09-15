@@ -9,6 +9,7 @@ import { IPaginationOptions } from '../shared/IPaginationOptions';
 import { SnackbarService } from '../shared/Snackbar.service';
 import { HoteldetailComponent } from './hoteldetail/hoteldetail.component';
 import { MatDialog } from '@angular/material/dialog';
+import { HotelConstants } from '../shared/Constants/HotelConstants';
 
 
 @Component({
@@ -27,6 +28,7 @@ export class DashboardComponent implements OnInit {
   //public busquedaForm: FormGroup;
 
   public listadoHoteles: HotelDto[] = [];
+  public imageHotelNotAvaible = HotelConstants.IMAGE_HOTEL_NOT_AVAIBLE;
 
   constructor(private dataService: HotelService,
               private fb: FormBuilder,
@@ -50,7 +52,7 @@ export class DashboardComponent implements OnInit {
 
 
 
-  displayedColumns = ['name', 'action', 'category', 'status'];
+  displayedColumns = ['image','name', 'category', 'action'];
   dataSource = [];
 
   ngOnInit() {
@@ -138,6 +140,10 @@ export class DashboardComponent implements OnInit {
 
     this.subscriptions.push(sub);
   }  
+
+  pageChanged(event: any){
+    console.log(event);
+  }
 
 }
 

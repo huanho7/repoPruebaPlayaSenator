@@ -17,3 +17,25 @@
   a {
     cursor: pointer;
   }
+
+  .paginacion-container {
+    margin-top: 20px;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+    .mat-paginator {
+      background: #f1f2f2;
+    }
+
+.mat-column-image{
+  max-width: 10%;
+}
+
+.mat-column-action{
+  max-width: 10%;
+}
+  
+  
