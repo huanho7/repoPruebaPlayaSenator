@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { HotelDto } from 'src/app/entities/HotelDto';
 import { HotelService } from 'src/app/services/hotelservice';
 import { SnackbarService } from 'src/app/shared/Snackbar.service';
 import { ChangeRelevanceRequestViewModel } from 'src/app/ViewModels/ChangeRelevanceRequestViewModel';
@@ -13,12 +15,15 @@ import Swal from 'sweetalert2';
 })
 export class HoteldetailComponent implements OnInit {
 
+  public hotelDetailDto!: HotelDto;
   public detalleHotelForm!: FormGroup;  
 
   constructor(private spinner: NgxSpinnerService,
               private dataService: HotelService,
               private snackBar: SnackbarService,
-              private fb: FormBuilder
+              private fb: FormBuilder,
+              @Inject(MAT_DIALOG_DATA) public data: any,
+              private matDialogRef: MatDialogRef<HoteldetailComponent>,
               ) { }
 
   ngOnInit(): void {
@@ -26,11 +31,27 @@ export class HoteldetailComponent implements OnInit {
   }
 
   initFormHotel(){
-    this.detalleHotelForm = this.fb.group({
-      foto: ['foto'],
-      nombre: ['ejemplo'],
-      descripcion: ['descripcionej']
+
+    this.spinner.show();
+
+    if(!(this.data && this.data.id)){
+      this.snackBar.openSnackBar('No se ha facilitado id de hotel para consultar');
+    }
+
+    this.dataService.getHotelById(this.data.id).subscribe(x => {
+      console.log(x)
+      if (x.resultadoOperacion) {
+
+        this.hotelDetailDto = x.respuesta;
+        this.loadFormHotel(x.respuesta);
+      } else {
+        this.snackBar.openSnackBar('Se ha producido un error al obtener los detalles del hotel');
+      }
+
+      this.spinner.hide();
     });
+
+
   }
 
   CambiarRelevanciaHotel(){
@@ -45,8 +66,17 @@ export class HoteldetailComponent implements OnInit {
         //this.matDialogRef.close()
         let newCRReq : ChangeRelevanceRequestViewModel = new ChangeRelevanceRequestViewModel();
 
-        newCRReq.IdHotel = 1;
-        newCRReq.IdNewRelevanceStatus = 2;
+        newCRReq.IdHotel = this.hotelDetailDto.id;
+
+        if(this.hotelDetailDto.idRelevance == 1)
+        {
+          newCRReq.IdNewRelevanceStatus = 2;
+        }
+        else{
+          newCRReq.IdNewRelevanceStatus = 1;
+        }
+
+        
 
         this.spinner.show();
         this.dataService.setRelevanciaHotel(newCRReq).subscribe(res => {
@@ -56,10 +86,21 @@ export class HoteldetailComponent implements OnInit {
           } else {
             this.snackBar.openSnackBar('Debido a un error no pudo actualizarse el nivel de relevancia del hotel');
           }
+
+          this.matDialogRef.close(true);
         });        
 
       }
     });    
-  }  
+  } 
+
+  loadFormHotel(detallesHotel : HotelDto){
+    this.detalleHotelForm = this.fb.group({
+      smallPhoto: [detallesHotel.shortImageData],
+      largePhoto: [detallesHotel.largeImageData],
+      name: [detallesHotel.name],
+      description: [detallesHotel.description]
+    });
+  } 
 
 }

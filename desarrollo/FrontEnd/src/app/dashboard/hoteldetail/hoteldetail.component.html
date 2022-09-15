@@ -15,12 +15,13 @@
         <mat-card class="example-card">
             <mat-card-header>
               <div mat-card-avatar class="example-header-image"></div>
-              <mat-card-title>Shiba Inu</mat-card-title>
-              <mat-card-subtitle>Dog Breed</mat-card-subtitle>
+              <mat-card-title>{{ this.hotelDetailDto.name }}</mat-card-title>
+              <mat-card-subtitle>{{ this.hotelDetailDto.categoryName }}</mat-card-subtitle>
             </mat-card-header>
             <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu">
             <mat-card-content>
               <p>
+                {{ this.hotelDetailDto.description }}
                 The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan.
                 A small, agile dog that copes very well with mountainous terrain, the Shiba Inu was originally
                 bred for hunting.
@@ -31,11 +32,11 @@
               <button mat-button>SHARE</button>
             </mat-card-actions> -->
           </mat-card>        
-        <!-- <div class="form-group">
+         <div class="form-group">
             <label for="nombre">Nombre</label>
             <input type="text" class="form-control" formControlName="nombre" placeholder="Ingresa nombre del rol..." />
         </div>       
-        <button mat-button (click)="CambiarRelevanciaHotel()">Cambiar relevancia del hotel</button>    -->
+        <button mat-button (click)="CambiarRelevanciaHotel()">Cambiar relevancia del hotel</button>
     </form>
 
 

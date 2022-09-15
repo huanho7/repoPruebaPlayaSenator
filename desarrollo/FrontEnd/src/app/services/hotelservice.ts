@@ -42,21 +42,10 @@ export class HotelService {
   }
 
   // // Obtenemos un hotel por su id
-  // getHotelById(args: IPaginacionArgs, busqueda: any): Observable<any> {
+  getHotelById(idHotel:number): Observable<any> {
 
-  //   let rutaBackend : string = environment.rutaBackEndDev;
+    let rutaBackend : string = environment.rutaBackEndDev;
 
-  //   // Filtro
-  //   let params = new HttpParams();
-
-  //   if (busqueda) {
-  //     busqueda.run != null ? (params = params.append('run', busqueda.run)) : null;
-  //     busqueda.nombreApellido != null ? (params = params.append('nombreApellido', busqueda.nombreApellido)) : null;
-  //     busqueda.idSolicitud != null ? (params = params.append('idSolicitud', busqueda.idSolicitud)) : null;
-  //     busqueda.idTipoTramite != null ? (params = params.append('idTipoTramite', busqueda.idTipoTramite)) : null;
-  //     busqueda.idClaseLicencia != null ? (params = params.append('idClaseLicencia', busqueda.idClaseLicencia)) : null;
-  //   }
-
-  //   return this._httpClient.get<any>(rutaBackend + '/GetHoteles'/*, args, { params: params }*/);
-  // }
+    return this._httpClient.get<any>(rutaBackend + '/GetHotelById/' + idHotel);
+  }
 }

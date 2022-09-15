@@ -89,9 +89,9 @@ export class DashboardComponent implements OnInit {
         // this.mostrandoFin = res.data.Respuesta.meta.currentPage * res.data.Respuesta.meta.itemsPerPage > this.length
         //     ? this.length
         //     : res.data.Respuesta.meta.currentPage * res.data.Respuesta.meta.itemsPerPage;
-        this.snackBar.openSnackBar('test');
+        //this.snackBar.openSnackBar('test');
       } else {
-        this.snackBar.openSnackBar(res.data.Error);
+        this.snackBar.openSnackBar('No se han encontrado resultados debido a un error en el sistema.');
         // this.length = 0;
         this.listadoHoteles = [];
         // this.mensaje = 'No se han encontrado resultados debido a un error en el sistema.';
@@ -127,6 +127,7 @@ export class DashboardComponent implements OnInit {
       panelClass: 'custom-dialog-container',
       width: '50%',
       data,
+      autoFocus : false
     });
 
     const sub: Subscription = dialog.afterClosed().subscribe((res: boolean) => {
