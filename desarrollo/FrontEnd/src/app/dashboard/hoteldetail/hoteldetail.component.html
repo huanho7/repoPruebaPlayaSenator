@@ -13,6 +13,7 @@
               <mat-card-title>{{ this.hotelDetailDto.name }}</mat-card-title>
               <mat-card-subtitle>{{ this.hotelDetailDto.categoryName }}</mat-card-subtitle>
             </mat-card-header>
+            <img *ngIf="(this.hotelDetailDto.largeImageData == undefined)" mat-card-image src="{{ this.imageHotelNotAvaible }}" alt="Foto del hotel">
             <img *ngIf="(this.hotelDetailDto.largeImageData != undefined)" mat-card-image src="{{ this.hotelDetailDto.largeImageData.trim() }}" alt="Foto del hotel">
             <mat-card-content>
               <p>
@@ -20,10 +21,20 @@
               </p>
             </mat-card-content>
             <br>
+            <mat-card-content>
+              <p *ngFor="let characteristic of this.hotelDetailDto.listaCaracteristicas">
+                <mat-icon>check</mat-icon> {{characteristic.name}}
+              </p> 
+            </mat-card-content>            
+            <br>
             <mat-card-actions>
               <button mat-raised-button color="primary" (click)="CambiarRelevanciaHotel()">Cambiar relevancia del hotel</button>
             </mat-card-actions>
-          </mat-card>        
+          </mat-card> 
+
+
+          
+
          <!-- <div class="form-group">
             <label for="nombre">Nombre</label>
             <input type="text" class="form-control" formControlName="nombre" placeholder="Ingresa nombre del rol..." />

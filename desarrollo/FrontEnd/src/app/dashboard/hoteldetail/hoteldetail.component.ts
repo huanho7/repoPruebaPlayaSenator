@@ -7,6 +7,7 @@ import { HotelService } from 'src/app/services/hotelservice';
 import { SnackbarService } from 'src/app/shared/Snackbar.service';
 import { ChangeRelevanceRequestViewModel } from 'src/app/ViewModels/ChangeRelevanceRequestViewModel';
 import Swal from 'sweetalert2';
+import { HotelConstants } from '../../shared/Constants/HotelConstants';
 
 @Component({
   selector: 'app-hoteldetail',
@@ -15,6 +16,7 @@ import Swal from 'sweetalert2';
 })
 export class HoteldetailComponent implements OnInit {
 
+  public imageHotelNotAvaible = HotelConstants.IMAGE_HOTEL_NOT_AVAIBLE;
   public hotelDetailDto!: HotelDto;
   public detalleHotelForm!: FormGroup;  
 

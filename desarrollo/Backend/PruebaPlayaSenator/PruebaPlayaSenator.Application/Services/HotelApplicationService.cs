@@ -3,6 +3,7 @@ using ExampleAPIWithEF.Context;
 using Microsoft.EntityFrameworkCore;
 using PruebaPlayaSenator.Application.Dto;
 using PruebaPlayaSenator.Application.Entities;
+using PruebaPlayaSenator.Application.Shared;
 using PruebPlayaSenator.Aplicacion;
 using System;
 using System.Collections.Generic;
@@ -188,6 +189,54 @@ namespace ExampleAPIWithEF.Application.Services
 
         }
 
+        public async Task<Resultado<List<HotelDto>>> GetListaHotelesPaginadoAsync(PaginationOptions pagOpt)
+        {
+            Resultado<List<HotelDto>> res = new Resultado<List<HotelDto>>();
+
+            try 
+            {
+                
+                //List<Hotel> hoteles = newContext.
+                //                        Hotel
+                //                        .Include(h => h.Relevance)
+                //                        .Include(h => h.Category)
+                //                        .Include(h => h.City)
+                //                        .Include(h => h.HotelXCharacteristic)
+                //                        .ThenInclude(hc => hc.Characteristic)
+                //                        .ToList();
+
+                PagedList<Hotel> listaHotelesPaginados = await PagedList<Hotel>.ToPagedList(newContext.
+                                                                Hotel
+                                                                .Include(h => h.Relevance)
+                                                                .Include(h => h.Category)
+                                                                .Include(h => h.City)
+                                                                .Include(h => h.HotelXCharacteristic)
+                                                                .ThenInclude(hc => hc.Characteristic), pagOpt.CurrentPage, pagOpt.PageSize);
+
+                // Mapear las propiedades
+                List<HotelDto> hotelesDto = Factoria.MapList<Hotel, HotelDto>(listaHotelesPaginados).ToList();
+                res.ResultadoPaginacion = new PaginationOptions() 
+                                               {    TotalItemsCount = listaHotelesPaginados.TotalCount,
+                                                    CurrentItemsCount = listaHotelesPaginados.Count,
+                                                    HasPreviousPage = listaHotelesPaginados.HasPrevious,
+                                                    HasNextPage = listaHotelesPaginados.HasNext,
+                                                    CurrentPage = listaHotelesPaginados.CurrentPage,
+                                                    PageSize = pagOpt.PageSize};
+                res.Respuesta = hotelesDto;
+                res.Mensaje = "Listado recuperado correctamente";
+                res.ResultadoOperacion = true;
+
+                return res;
+
+            }
+            catch (Exception ex)
+            {
+                res.Mensaje = "Se ha producido un error en la aplicación";
+                res.ResultadoOperacion = true;
+
+                return res;
+            }
+        }
         public void Dispose()
         {
 

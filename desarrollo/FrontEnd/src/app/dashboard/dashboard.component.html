@@ -49,23 +49,16 @@
                                   <!-- Paginado - length > 0-->
                     <div *ngIf="1 > 0" class="paginacion-container">
                       <div style="float: left;">
-                        Mostrando del  mostrandoInicio  al  mostrandoFin  de  length  entradas
+                        Mostrando 0 de {{this.pagOptions.totalItemsCount}} entradas
                       </div>
                       <mat-paginator
-                        [length]="6"
-                        [pageIndex]="0"
+                        [length]="this.pagOptions.totalItemsCount"
+                        [pageIndex]="this.pagOptions.currentPage - 1"
                         [pageSize]="5"
                         [hidePageSize]="true"
                         (page)="pageChanged($event)"
                       ></mat-paginator>
 
-                      <!-- <mat-paginator
-                        [length]="length"
-                        [pageIndex]="currentPage - 1"
-                        [pageSize]="pages.value"
-                        [hidePageSize]="true"
-                        (page)="pageChanged($event)"
-                      ></mat-paginator> -->
                     </div>
                   </div>
             </mat-card-content>

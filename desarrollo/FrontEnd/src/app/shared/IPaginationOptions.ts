@@ -1,11 +1,15 @@
 export class IPaginationOptions {
-    limit: number;
-    page: number;
-    route?: string;
+    pageSize: number;
+    currentPage: number;
+    totalItemsCount?: number;
+    hasPreviousPage?: number;
+    hasNextPage?: number;
   
-    constructor(limit: number, page: number, route?: string) {
-      this.limit = limit;
-      this.page = page;
-      this.route = route;
+    constructor(pageSize: number, currentPage: number, totalItemsCount?: number, hasPreviousPage?: number, hasNextPage?: number) {
+      this.pageSize = pageSize;
+      this.currentPage = currentPage;
+      this.totalItemsCount = totalItemsCount;
+      this.hasPreviousPage = hasPreviousPage;
+      this.hasNextPage = hasNextPage;
     }
   }

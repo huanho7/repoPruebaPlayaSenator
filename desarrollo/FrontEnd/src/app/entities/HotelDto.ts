@@ -1,3 +1,5 @@
+import { CharacteristicDto } from "./CharacteristicDto";
+
 export interface HotelDto {
     id: number;
     name: string;
@@ -12,4 +14,6 @@ export interface HotelDto {
     shortImageData: string;
     largeImageTitle: string;
     largeImageData: string;     
+
+    listaCaracteristicas:CharacteristicDto[];
   }
