@@ -174,7 +174,7 @@ namespace ExampleAPIWithEF.Application.Services
                 List<HotelDto> hotelesDto = Factoria.MapList<Hotel, HotelDto>(hoteles).ToList();
 
                 res.Respuesta = hotelesDto;
-                res.Mensaje = "Usuario guardado correctamente";
+                res.Mensaje = "Listado recuperado correctamente";
                 res.ResultadoOperacion = true;
 
                 return res;
