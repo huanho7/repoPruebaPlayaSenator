@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using PruebaPlayaSenator.Application.Dto;
 using PruebaPlayaSenator.Application.Entities;
 using PruebaPlayaSenator.Application.Shared;
+using PruebaPlayaSenator.Application.ViewModel;
 using PruebPlayaSenator.Aplicacion;
 using System;
 using System.Collections.Generic;
@@ -86,12 +87,11 @@ namespace ExampleAPIWithEF.Application.Services
             {
                 res.Mensaje = "Se ha producido un error en la aplicación";
                 res.ResultadoOperacion = true;
+                Console.WriteLine(ex.ToString());
 
                 return res;
 
             }
-
-            return null;
         }
 
         public Resultado<HotelDto> GetHotelById(int idHotel)
@@ -146,6 +146,7 @@ namespace ExampleAPIWithEF.Application.Services
             {
                 res.Mensaje = "Se ha producido un error en la aplicación";
                 res.ResultadoOperacion = true;
+                Console.WriteLine(ex.ToString());
 
                 return res;
 
@@ -182,6 +183,7 @@ namespace ExampleAPIWithEF.Application.Services
             {
                 res.Mensaje = "Se ha producido un error en la aplicación";
                 res.ResultadoOperacion = true;
+                Console.WriteLine(ex.ToString());
 
                 return res;
 
@@ -189,29 +191,37 @@ namespace ExampleAPIWithEF.Application.Services
 
         }
 
-        public async Task<Resultado<List<HotelDto>>> GetListaHotelesPaginadoAsync(PaginationOptions pagOpt)
+        public async Task<Resultado<List<HotelDto>>> GetListaHotelesPaginadoAsync(HotelFilterQueryParametersViewModel hotelFilterQueryParametersViewModel)
         {
             Resultado<List<HotelDto>> res = new Resultado<List<HotelDto>>();
 
             try 
             {
-                
-                //List<Hotel> hoteles = newContext.
-                //                        Hotel
-                //                        .Include(h => h.Relevance)
-                //                        .Include(h => h.Category)
-                //                        .Include(h => h.City)
-                //                        .Include(h => h.HotelXCharacteristic)
-                //                        .ThenInclude(hc => hc.Characteristic)
-                //                        .ToList();
 
-                PagedList<Hotel> listaHotelesPaginados = await PagedList<Hotel>.ToPagedList(newContext.
-                                                                Hotel
-                                                                .Include(h => h.Relevance)
-                                                                .Include(h => h.Category)
-                                                                .Include(h => h.City)
-                                                                .Include(h => h.HotelXCharacteristic)
-                                                                .ThenInclude(hc => hc.Characteristic), pagOpt.CurrentPage, pagOpt.PageSize);
+                IQueryable<Hotel> newQuery = newContext.
+                                                Hotel
+                                                .Include(h => h.Relevance)
+                                                .Include(h => h.Category)
+                                                .Include(h => h.City)
+                                                .Include(h => h.HotelXCharacteristic)
+                                                .ThenInclude(hc => hc.Characteristic);
+
+                if(hotelFilterQueryParametersViewModel != null)
+                {
+                    if(hotelFilterQueryParametersViewModel.FilterName != null)
+                    {
+                        newQuery = newQuery.Where(x => x.Name.ToUpper().Contains(hotelFilterQueryParametersViewModel.FilterName.ToUpper()));
+                    }
+                    if(hotelFilterQueryParametersViewModel.FilterTop != null)
+                    {
+                        if(hotelFilterQueryParametersViewModel.FilterTop == true)
+                        {
+                            newQuery = newQuery.Where(x => x.Relevance.Id == 1);
+                        }
+                    }
+                }
+
+                PagedList<Hotel> listaHotelesPaginados = await PagedList<Hotel>.ToPagedList(newQuery, hotelFilterQueryParametersViewModel.PagOptions.CurrentPage, hotelFilterQueryParametersViewModel.PagOptions.PageSize);
 
                 // Mapear las propiedades
                 List<HotelDto> hotelesDto = Factoria.MapList<Hotel, HotelDto>(listaHotelesPaginados).ToList();
@@ -221,7 +231,8 @@ namespace ExampleAPIWithEF.Application.Services
                                                     HasPreviousPage = listaHotelesPaginados.HasPrevious,
                                                     HasNextPage = listaHotelesPaginados.HasNext,
                                                     CurrentPage = listaHotelesPaginados.CurrentPage,
-                                                    PageSize = pagOpt.PageSize};
+                                                    PageSize = hotelFilterQueryParametersViewModel.PagOptions.PageSize};
+
                 res.Respuesta = hotelesDto;
                 res.Mensaje = "Listado recuperado correctamente";
                 res.ResultadoOperacion = true;
@@ -233,6 +244,7 @@ namespace ExampleAPIWithEF.Application.Services
             {
                 res.Mensaje = "Se ha producido un error en la aplicación";
                 res.ResultadoOperacion = true;
+                Console.WriteLine(ex.ToString());
 
                 return res;
             }

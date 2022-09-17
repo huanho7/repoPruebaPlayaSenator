@@ -1,13 +1,54 @@
 <div>
     <br>
       <div class="container">
+        <div class="container">
+          <div fxLayout="row" fxLayoutAlign="center center" class="content">
+          <mat-accordion>
+            <mat-expansion-panel hideToggle id="filtro-busqueda">
 
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  Filtros de Búsqueda
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+
+              <form [formGroup]="filtroForm">
+
+                
+                <div class="row">
+                  <div class="col-sm">
+                    <mat-form-field appearance="fill">
+                      <mat-label>Nombre del hotel</mat-label>
+                      <input matInput formControlName="name">
+                    </mat-form-field>                    
+                  </div>
+                  <div class="col-sm">
+                    <mat-checkbox class="check-class" formControlName="top">Mostrar sólo destacados</mat-checkbox>                    
+                  </div>
+                  <br>
+                  <div style="text-align:center">
+                    <div class="button-container">
+                      <button mat-raised-button color="primary" type="button" class="btn btn-primary btn-icon" (click)="buscarHoteles()">
+                        <mat-icon style="vertical-align: middle;">search</mat-icon>
+                        Buscar
+                      </button>
+                    </div>
+                  </div>
+
+                </div>
+    
+
+              </form>
+            </mat-expansion-panel>
+          </mat-accordion>
+        </div>
+        </div>
       <br>
       <div class="container">
         <div fxLayout="row" fxLayoutAlign="center center" class="content">
           <mat-card class="card" >
             <mat-card-title fxLayout.gt-xs="row" fxLayout.xs="column">
-              <h3>Lista de hoteles</h3>
+              <h6>Lista de hoteles</h6>
             </mat-card-title>
             <mat-card-content>
                 <div class="example-container mat-elevation-z8">
@@ -15,12 +56,15 @@
                       <ng-container matColumnDef="image">
                         <mat-header-cell *matHeaderCellDef> </mat-header-cell>
                         <mat-cell *matCellDef="let element">
-                          <div *ngIf="(element.shortImageData == undefined)" mat-card-avatar class="example-header-image" style="background-image: url('{{ this.imageHotelNotAvaible }}');"></div>
-                          <div *ngIf="(element.shortImageData != undefined)" mat-card-avatar class="example-header-image" style="background-image: url('{{ element.shortImageData.trim() }}');"></div> 
+                          <a class="table-actions-icon" title="Abrir detalle Hotel"
+                          (click)="openHotelModal(element.id)">                          
+                          <div *ngIf="(element.shortImageData == undefined)" class="round-image" style="background-image: url('{{ this.imageHotelNotAvaible }}');"></div>
+                          <div *ngIf="(element.shortImageData != undefined)" class="round-image" style="background-image: url('{{ element.shortImageData.trim() }}');"></div>
+                          </a>
                         </mat-cell>
                       </ng-container>
                     <ng-container matColumnDef="name">
-                      <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+                      <mat-header-cell *matHeaderCellDef> Nombre </mat-header-cell>
                       <mat-cell *matCellDef="let element">
                         <a class="table-actions-icon" title="Abrir detalle Hotel"
                         (click)="openHotelModal(element.id)">{{element.name}}</a>                        
@@ -38,7 +82,7 @@
                       </mat-cell>
                     </ng-container>
                       <ng-container matColumnDef="category">
-                        <mat-header-cell *matHeaderCellDef> Category </mat-header-cell>
+                        <mat-header-cell *matHeaderCellDef> Categoría </mat-header-cell>
                         <mat-cell *matCellDef="let element"> {{element.categoryName}} </mat-cell>
                       </ng-container>
 
@@ -49,11 +93,11 @@
                                   <!-- Paginado - length > 0-->
                     <div *ngIf="1 > 0" class="paginacion-container">
                       <div style="float: left;">
-                        Mostrando 0 de {{this.pagOptions.totalItemsCount}} entradas
+                        Mostrando {{this.hotelfilterQuery.PagOptions.currentItemsCount}} de {{this.hotelfilterQuery.PagOptions.totalItemsCount}} entradas
                       </div>
                       <mat-paginator
-                        [length]="this.pagOptions.totalItemsCount"
-                        [pageIndex]="this.pagOptions.currentPage - 1"
+                        [length]="this.hotelfilterQuery.PagOptions.totalItemsCount"
+                        [pageIndex]="this.hotelfilterQuery.PagOptions.currentPage - 1"
                         [pageSize]="5"
                         [hidePageSize]="true"
                         (page)="pageChanged($event)"
@@ -67,4 +111,5 @@
       </div>
     </div>
   </div>
+  
   

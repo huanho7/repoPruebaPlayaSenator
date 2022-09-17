@@ -68,14 +68,14 @@ namespace ExampleAPIWithEF.Controllers
 
         [Route("~/api/GetHotelesPaginado")]
         [HttpPost]
-        public async Task<Resultado<List<HotelDto>>> GetHotelesPaginadoAsync([FromBody] PaginationOptions pagOpt)
+        public async Task<Resultado<List<HotelDto>>> GetHotelesPaginadoAsync([FromBody] HotelFilterQueryParametersViewModel hotelFilterQueryParametersViewModel)
         {
 
             Resultado<List<HotelDto>> res = null;
 
             using (IHotelApplicationService userApplicationService = Factoria.GetInstance<IHotelApplicationService>())
             {
-                res = await userApplicationService.GetListaHotelesPaginadoAsync(pagOpt);
+                res = await userApplicationService.GetListaHotelesPaginadoAsync(hotelFilterQueryParametersViewModel);
             }
 
             return res;

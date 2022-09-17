@@ -19,8 +19,9 @@ import {
 
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
-
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatExpansionModule } from '@angular/material/expansion';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 
 @NgModule({
   imports: [
@@ -35,6 +36,8 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
     MatButtonModule,
     MatInputModule,
     MatPaginatorModule,
+    MatExpansionModule,
+    MatCheckboxModule
   ],
   exports: [
     MatSidenavModule,
@@ -47,7 +50,9 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
     MatDialogModule,
     MatButtonModule,
     MatInputModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatExpansionModule,
+    MatCheckboxModule
   ]
 })
 export class MaterialModule {}

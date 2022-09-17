@@ -1,12 +1,13 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { Subscription } from 'rxjs';
 import { HotelDto } from 'src/app/entities/HotelDto';
 import { HotelService } from 'src/app/services/hotelservice';
+import { ConfirmationModalComponent } from 'src/app/shared-components/confirmation-modal/confirmation-modal.component';
 import { SnackbarService } from 'src/app/shared/Snackbar.service';
 import { ChangeRelevanceRequestViewModel } from 'src/app/ViewModels/ChangeRelevanceRequestViewModel';
-import Swal from 'sweetalert2';
 import { HotelConstants } from '../../shared/Constants/HotelConstants';
 
 @Component({
@@ -16,9 +17,11 @@ import { HotelConstants } from '../../shared/Constants/HotelConstants';
 })
 export class HoteldetailComponent implements OnInit {
 
+  // Inicialización de variables
   public imageHotelNotAvaible = HotelConstants.IMAGE_HOTEL_NOT_AVAIBLE;
   public hotelDetailDto!: HotelDto;
   public detalleHotelForm!: FormGroup;  
+  private subscriptions: Subscription[]  = [];
 
   constructor(private spinner: NgxSpinnerService,
               private dataService: HotelService,
@@ -26,6 +29,7 @@ export class HoteldetailComponent implements OnInit {
               private fb: FormBuilder,
               @Inject(MAT_DIALOG_DATA) public data: any,
               private matDialogRef: MatDialogRef<HoteldetailComponent>,
+              private matDialog: MatDialog
               ) {
 
                 this.detalleHotelForm = this.fb.group({
@@ -42,7 +46,7 @@ export class HoteldetailComponent implements OnInit {
   }
 
   initFormHotel(){
-
+    // Se recogen los datos
     this.spinner.show();
 
     if(!(this.data && this.data.id)){
@@ -50,7 +54,7 @@ export class HoteldetailComponent implements OnInit {
     }
 
     this.dataService.getHotelById(this.data.id).subscribe(x => {
-      console.log(x)
+
       if (x.resultadoOperacion) {
 
         this.hotelDetailDto = x.respuesta;
@@ -66,25 +70,34 @@ export class HoteldetailComponent implements OnInit {
   }
 
   CambiarRelevanciaHotel(){
-    Swal.fire({
 
-      title: '¿Confirma que desea cambiar la relevancia del hotel?',
-      confirmButtonText: "Si",
-      cancelButtonText: "No",
-      showCancelButton: true,
-    }).then((swal: { isConfirmed: any; }) => {
-      if (swal.isConfirmed) {
-        //this.matDialogRef.close()
+
+    const data = {
+      confirmationText : "¿Desea realmente cambiar la relevancia del hotel seleccionado?",
+      confirmationButtonText : "Sí",
+      cancelButtonText : "No"
+    };
+
+    const dialog = this.matDialog.open(ConfirmationModalComponent, {
+      panelClass: 'custom-dialog-container',
+      width: '30%',
+      height: '20%',
+      data,
+      autoFocus : false
+    });
+
+    const sub: Subscription = dialog.afterClosed().subscribe((res: boolean) => {
+      if (res == true) {
         let newCRReq : ChangeRelevanceRequestViewModel = new ChangeRelevanceRequestViewModel();
 
         newCRReq.IdHotel = this.hotelDetailDto.id;
 
-        if(this.hotelDetailDto.idRelevance == 1)
+        if(this.hotelDetailDto.idRelevance == HotelConstants.RELEVANCE_ID_HIGH)
         {
-          newCRReq.IdNewRelevanceStatus = 2;
+          newCRReq.IdNewRelevanceStatus = HotelConstants.RELEVANCE_ID_LOW;
         }
         else{
-          newCRReq.IdNewRelevanceStatus = 1;
+          newCRReq.IdNewRelevanceStatus = HotelConstants.RELEVANCE_ID_HIGH;
         }
 
         
@@ -99,10 +112,15 @@ export class HoteldetailComponent implements OnInit {
           }
 
           this.matDialogRef.close(true);
-        });        
+        });  
+      }
+      else{
 
       }
-    });    
+    });
+
+    this.subscriptions.push(sub);
+   
   } 
 
   loadFormHotel(detallesHotel : HotelDto){

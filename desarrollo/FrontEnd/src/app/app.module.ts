@@ -14,6 +14,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 import { HoteldetailComponent } from './dashboard/hoteldetail/hoteldetail.component';
+import { ConfirmationModalComponent } from './shared-components/confirmation-modal/confirmation-modal.component';
 
 
 
@@ -23,7 +24,8 @@ import { HoteldetailComponent } from './dashboard/hoteldetail/hoteldetail.compon
     InicioComponent,
     DashboardComponent,
     WelcomeComponent,
-    HoteldetailComponent
+    HoteldetailComponent,
+    ConfirmationModalComponent
   ],
   imports: [
     BrowserModule,

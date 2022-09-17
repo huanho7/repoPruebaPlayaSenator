@@ -2,9 +2,9 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { IPaginacionArgs } from '../shared/IPaginationArgs';
-import { IPaginationOptions } from '../shared/IPaginationOptions';
+import { PaginationOptions } from '../shared/PaginationOptions';
 import { ChangeRelevanceRequestViewModel } from '../ViewModels/ChangeRelevanceRequestViewModel';
+import { HotelFilterQueryParametersViewModel } from '../ViewModels/HotelFilterQueryParametersViewModel';
 
 @Injectable({
   providedIn: 'root',
@@ -41,11 +41,11 @@ export class HotelService {
   }
 
   // Obtenemos la lista de hoteles paginada
-  getListaHotelesPaginated(pagOptions : IPaginationOptions): Observable<any> {
+  getListaHotelesPaginated(searchFilter : HotelFilterQueryParametersViewModel): Observable<any> {
 
     let rutaBackend : string = environment.rutaBackEndDev;
 
-    let response = this._httpClient.post<any>(rutaBackend + '/GetHotelesPaginado', pagOptions);
+    let response = this._httpClient.post<any>(rutaBackend + '/GetHotelesPaginado', searchFilter);
     return response;
   }  
 }
