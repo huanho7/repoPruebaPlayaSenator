@@ -26,7 +26,7 @@
                     <mat-checkbox class="check-class" formControlName="top">Mostrar sólo destacados</mat-checkbox>                    
                   </div>
                   <br>
-                  <div style="text-align:center">
+                  <div class="col-sm">
                     <div class="button-container">
                       <button mat-raised-button color="primary" type="button" class="btn btn-primary btn-icon" (click)="buscarHoteles()">
                         <mat-icon style="vertical-align: middle;">search</mat-icon>
@@ -92,7 +92,7 @@
                     </mat-table>
                                   <!-- Paginado - length > 0-->
                     <div *ngIf="1 > 0" class="paginacion-container">
-                      <div style="float: left;">
+                      <div style="float: left;margin-left: 5px;">
                         Mostrando {{this.hotelfilterQuery.PagOptions.currentItemsCount}} de {{this.hotelfilterQuery.PagOptions.totalItemsCount}} entradas
                       </div>
                       <mat-paginator

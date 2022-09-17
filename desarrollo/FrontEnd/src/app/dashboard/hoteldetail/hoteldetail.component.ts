@@ -80,7 +80,7 @@ export class HoteldetailComponent implements OnInit {
 
     const dialog = this.matDialog.open(ConfirmationModalComponent, {
       panelClass: 'custom-dialog-container',
-      width: '30%',
+      width: '35%',
       height: '20%',
       data,
       autoFocus : false
